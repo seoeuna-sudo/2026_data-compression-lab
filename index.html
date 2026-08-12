@@ -157,6 +157,7 @@
   .tree-legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:6px;flex-wrap:wrap;}
   .tree-legend span{display:inline-flex;align-items:center;gap:5px;}
   .tree-legend i{width:14px;height:3px;border-radius:2px;display:inline-block;}
+  .tree-legend i.node-swatch{width:13px;height:13px;border-radius:50%;}
 
   .run-chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;}
   .run-chip{font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--panel-alt);border:1px solid var(--border);border-radius:8px;padding:5px 10px;}
@@ -264,7 +265,7 @@
       </div>
       <div class="row">
         <button class="btn primary" onclick="rleCheck()">확인</button>
-        <span class="hint-toggle" onclick="rleReveal()">정답 보기</span>
+        <span class="hint-toggle" onclick="rleReveal()">힌트 보기</span>
       </div>
       <div class="feedback" id="rleFeedback"></div>
       <div class="gauge" id="rleGauge" style="display:none;">
@@ -309,6 +310,7 @@
 
     <div class="card" id="hufStepCard" style="display:none;">
       <div class="steps-nav" id="hufStepsNav"></div>
+      <div id="hufBackNav" style="margin-bottom:14px;"></div>
       <div id="hufStepBody"></div>
     </div>
     <p class="qa footnote" style="max-width:900px;">* 본 연습 도구는 영문 알파벳 1글자를 ASCII 코드 기준 8비트(1Byte)로 계산합니다.</p>
@@ -449,12 +451,9 @@ function rleCheck(){
   }
 }
 function rleReveal(){
-  document.getElementById('rleCompressedInput').value = rle.compressed;
-  document.getElementById('rleBitsInput').value = rle.compressed.length*8;
   const fb = document.getElementById('rleFeedback');
   fb.className='feedback info';
-  fb.textContent = `정답: "${rle.compressed}" (${rle.compressed.length*8}비트)`;
-  rleShowResult();
+  fb.textContent = `힌트: "${rle.compressed}" (${rle.compressed.length*8}비트) — 위 칸에 직접 입력하고 확인을 눌러야 다음으로 넘어갈 수 있어.`;
 }
 
 /* ===================================================================
@@ -469,9 +468,24 @@ let huf = { word:'', freq:{}, steps:[], codes:{}, root:null, leavesAlpha:[], sta
 
 function computeFreq(word){ const f={}; for(const ch of word) f[ch]=(f[ch]||0)+1; return f; }
 
+/* 두 노드의 우선순위를 비교: 빈도수가 같으면 "이미 결합된 노드"가 먼저,
+   결합 노드끼리는 먼저 만들어진 순서, 리프 노드끼리는 알파벳순 */
+function comparePriority(a,b){
+  if(a.freq!==b.freq) return a.freq-b.freq;
+  const aLeaf = a.isLeaf!==false;
+  const bLeaf = b.isLeaf!==false;
+  if(aLeaf!==bLeaf) return aLeaf ? 1 : -1;
+  if(!aLeaf && !bLeaf){
+    const an = parseInt(String(a.label).replace(/^p/,''),10);
+    const bn = parseInt(String(b.label).replace(/^p/,''),10);
+    return an-bn;
+  }
+  return String(a.label).localeCompare(String(b.label));
+}
+
 function buildHuffman(freq){
   let leaves = Object.entries(freq).map(([ch,n])=>({label:ch,freq:n,isLeaf:true}));
-  leaves.sort((a,b)=> a.freq-b.freq || a.label.localeCompare(b.label));
+  leaves.sort(comparePriority);
   let Q1 = leaves.slice(); let Q2 = []; let steps=[]; let counter=0;
   function popSmallest(){
     const f1 = Q1.length? Q1[0].freq: Infinity;
@@ -480,7 +494,7 @@ function buildHuffman(freq){
     return Q1.shift();
   }
   while(Q1.length+Q2.length>1){
-    const beforeActive = Q1.concat(Q2).sort((a,b)=>a.freq-b.freq || a.label.localeCompare(b.label));
+    const beforeActive = Q1.concat(Q2).sort(comparePriority);
     const n1 = popSmallest();
     const n2 = popSmallest();
     counter++;
@@ -591,8 +605,9 @@ function renderTreeSVG(roots, opts){
         nodes.push(`<text x="${x}" y="${y+radius+15}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--coral-deep)">${node.label}=${node._code||''}</text>`);
       }
     } else {
-      nodes.push(`<circle cx="${x}" cy="${y}" r="${radius-3}" fill="#FFFFFF" stroke="var(--muted)" stroke-width="2"/>`);
-      nodes.push(`<text x="${x}" y="${y+4}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#3B2A1C">${node.freq}</text>`);
+      nodes.push(`<circle cx="${x}" cy="${y}" r="${radius-1}" fill="#FFFFFF" stroke="var(--sage-deep)" stroke-width="2.2"/>`);
+      nodes.push(`<text x="${x}" y="${y-2}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="var(--sage-deep)">${node.label}</text>`);
+      nodes.push(`<text x="${x}" y="${y+11}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#3B2A1C">(${node.freq})</text>`);
     }
   }
   roots.forEach(visit);
@@ -609,8 +624,17 @@ function hufStepsNavHTML(){
   }).join('');
 }
 
+function hufPrevStage(){
+  if(huf.stage===3 && huf.mcIdx>0){ huf.mcIdx--; hufRender(); return; }
+  if(huf.stage===3){ huf.stage=2; hufRender(); return; }
+  if(huf.stage===4){ huf.stage=3; huf.mcIdx=Math.max(0, huf.steps.length-1); hufRender(); return; }
+  if(huf.stage>1){ huf.stage--; hufRender(); return; }
+}
+
 function hufRender(){
   document.getElementById('hufStepsNav').innerHTML = hufStepsNavHTML();
+  document.getElementById('hufBackNav').innerHTML = huf.stage>1
+    ? `<button class="btn" onclick="hufPrevStage()">← 이전 단계</button>` : '';
   const body = document.getElementById('hufStepBody');
 
   if(huf.stage===1){
@@ -624,7 +648,7 @@ function hufRender(){
       </table>
       <div class="row">
         <button class="btn primary" onclick="hufCheckFreq()">확인</button>
-        <span class="hint-toggle" onclick="hufRevealFreq()">정답 보기</span>
+        <span class="hint-toggle" onclick="hufRevealFreq()">힌트 보기</span>
       </div>
       <div class="feedback" id="hufFreqFeedback"></div>
     `;
@@ -632,14 +656,17 @@ function hufRender(){
   }
 
   if(huf.stage===2){
-    const sorted = huf.leavesAlpha.map(c=>({label:c,freq:huf.freq[c]}))
-      .sort((a,b)=>a.freq-b.freq || a.label.localeCompare(b.label));
+    const sorted = huf.leavesAlpha.map(c=>({label:c,freq:huf.freq[c],isLeaf:true}))
+      .sort(comparePriority);
     const previewRoots = sorted.map(n=>({label:n.label, freq:n.freq, isLeaf:true}));
     body.innerHTML = `
       <h2>2단계 · 노드를 빈도수 순으로 정렬하기</h2>
       <p class="desc">각 문자를 "물컵(노드)"이라고 생각해 봐. 빈도수가 낮을수록 물이 적게 담긴 물컵이야. 아래는 빈도수가 작은 순서(오름차순)로 정렬한 결과야.</p>
       <div>${sorted.map(n=>`<span class="node-chip">${n.label} <b>${n.freq}</b></span>`).join('')}</div>
       <div class="tree-wrap">${renderTreeSVG(previewRoots)}</div>
+      <div class="tree-legend">
+        <span><i class="node-swatch" style="background:var(--amber);border:1.5px solid var(--amber-deep)"></i>문자(리프) 노드</span>
+      </div>
       <div class="explain"><b>정렬 규칙</b> 빈도수가 같으면 알파벳순으로 정렬해. 다음 단계에서는 이 중 <b>가장 작은 두 노드부터</b> 차례로 짝지어 결합할 거야.</div>
       <div class="row"><button class="btn primary" onclick="hufGoStage(3)">다음 단계로</button></div>
     `;
@@ -655,6 +682,8 @@ function hufRender(){
       <div class="explain"><b>결합 순서 규칙</b> 빈도수가 작을수록 먼저 결합돼. 빈도수가 같다면, 먼저 만들어진 결합 노드가 우선이고 그다음은 알파벳순이야. (교과서 46쪽 방식과 동일)</div>
       <div class="tree-wrap">${renderTreeSVG(step.beforeActive.map(n=>({...n})))}</div>
       <div class="tree-legend">
+        <span><i class="node-swatch" style="background:var(--amber);border:1.5px solid var(--amber-deep)"></i>문자 노드</span>
+        <span><i class="node-swatch" style="background:#fff;border:2px solid var(--sage-deep)"></i>결합 노드 (p1, p2 …)</span>
         <span><i style="background:var(--sage-deep)"></i>왼쪽 결합 (코드 0)</span>
         <span><i style="background:var(--coral-deep)"></i>오른쪽 결합 (코드 1)</span>
       </div>
@@ -673,6 +702,8 @@ function hufRender(){
       <p class="desc">완성된 트리에서 뿌리(root)부터 각 문자까지 내려가면서, <b>왼쪽으로 가면 0</b>, <b>오른쪽으로 가면 1</b>을 순서대로 적으면 그 문자의 코드가 돼.</p>
       <div class="tree-wrap">${renderTreeSVG([huf.root])}</div>
       <div class="tree-legend">
+        <span><i class="node-swatch" style="background:var(--amber);border:1.5px solid var(--amber-deep)"></i>문자 노드</span>
+        <span><i class="node-swatch" style="background:#fff;border:2px solid var(--sage-deep)"></i>결합 노드 (p1, p2 …)</span>
         <span><i style="background:var(--sage-deep)"></i>왼쪽 (0)</span>
         <span><i style="background:var(--coral-deep)"></i>오른쪽 (1)</span>
       </div>
@@ -683,7 +714,7 @@ function hufRender(){
       </table>
       <div class="row">
         <button class="btn primary" onclick="hufCheckCodes()">확인</button>
-        <span class="hint-toggle" onclick="hufRevealCodes()">정답 보기</span>
+        <span class="hint-toggle" onclick="hufRevealCodes()">힌트 보기</span>
       </div>
       <div class="feedback" id="hufCodeFeedback"></div>
     `;
@@ -700,6 +731,12 @@ function hufRender(){
       <h2>5단계 · 전체 문자열 인코딩하기</h2>
       <p class="desc">완성한 코드를 이용해서 "${huf.word}"를 <b>순서대로</b> 이진 코드로 바꿔 띄어쓰기 없이 이어 붙여 봐.</p>
       <div class="tree-wrap">${renderTreeSVG([rootWithCodes], {showCodeLabels:true})}</div>
+      <div class="tree-legend">
+        <span><i class="node-swatch" style="background:var(--amber);border:1.5px solid var(--amber-deep)"></i>문자 노드</span>
+        <span><i class="node-swatch" style="background:#fff;border:2px solid var(--sage-deep)"></i>결합 노드 (p1, p2 …)</span>
+        <span><i style="background:var(--sage-deep)"></i>왼쪽 (0)</span>
+        <span><i style="background:var(--coral-deep)"></i>오른쪽 (1)</span>
+      </div>
       <p><span class="hint-toggle" onclick="hufToggleCodeHint()">코드표 다시 보기</span></p>
       <div id="hufCodeHint" style="display:none;margin-bottom:10px;">
         ${huf.leavesAlpha.map(c=>`<span class="node-chip">${c} <b>${huf.codes[c]}</b></span>`).join('')}
@@ -707,7 +744,7 @@ function hufRender(){
       <input type="text" id="hufEncodeInput" class="wide" style="width:100%;" placeholder="예: 0111100..." autocorrect="off" autocomplete="off" spellcheck="false">
       <div class="row" style="margin-top:10px;">
         <button class="btn primary" onclick="hufCheckEncode()">확인</button>
-        <span class="hint-toggle" onclick="hufRevealEncode()">정답 보기</span>
+        <span class="hint-toggle" onclick="hufRevealEncode()">힌트 보기</span>
       </div>
       <div class="feedback" id="hufEncodeFeedback"></div>
       <div class="gauge" id="hufGauge" style="display:none;">
@@ -728,6 +765,8 @@ function hufRender(){
       <div class="explain"><b>복호화 방법</b> 비트열의 맨 앞부터 트리를 따라 내려가다가(0=왼쪽, 1=오른쪽) 문자(리프 노드)에 도착하면 그 문자로 바꾸고, 다시 뿌리(root)에서부터 다음 비트를 읽기 시작해.</div>
       <div class="tree-wrap">${renderTreeSVG([huf.root])}</div>
       <div class="tree-legend">
+        <span><i class="node-swatch" style="background:var(--amber);border:1.5px solid var(--amber-deep)"></i>문자 노드</span>
+        <span><i class="node-swatch" style="background:#fff;border:2px solid var(--sage-deep)"></i>결합 노드 (p1, p2 …)</span>
         <span><i style="background:var(--sage-deep)"></i>왼쪽 (0)</span>
         <span><i style="background:var(--coral-deep)"></i>오른쪽 (1)</span>
       </div>
@@ -737,7 +776,7 @@ function hufRender(){
       <input type="text" id="hufDecodeInput" class="wide" style="width:100%;" placeholder="예: ban" autocorrect="off" autocomplete="off" spellcheck="false">
       <div class="row" style="margin-top:10px;">
         <button class="btn primary" onclick="hufCheckDecode()">확인</button>
-        <span class="hint-toggle" onclick="hufRevealDecode()">정답 보기</span>
+        <span class="hint-toggle" onclick="hufRevealDecode()">힌트 보기</span>
       </div>
       <div class="feedback" id="hufDecodeFeedback"></div>
     `;
@@ -765,9 +804,10 @@ function hufCheckFreq(){
   }
 }
 function hufRevealFreq(){
-  document.querySelectorAll('.freq-input').forEach(inp=>{ inp.value = huf.freq[inp.dataset.ch]; inp.style.borderColor='var(--amber-deep)'; });
+  const hint = huf.leavesAlpha.map(c=>`${c}=${huf.freq[c]}`).join(', ');
   const fb = document.getElementById('hufFreqFeedback');
-  fb.className='feedback info'; fb.textContent='정답을 채워 넣었어. 확인 후 다음 단계로 넘어가 봐.';
+  fb.className='feedback info';
+  fb.textContent = `힌트: ${hint} — 위 칸에 직접 입력하고 확인을 눌러야 다음 단계로 넘어갈 수 있어.`;
 }
 
 /* --- Stage 3 --- */
@@ -811,9 +851,10 @@ function hufCheckCodes(){
   }
 }
 function hufRevealCodes(){
-  document.querySelectorAll('.code-input').forEach(inp=>{ inp.value = huf.codes[inp.dataset.ch]; inp.style.borderColor='var(--amber-deep)'; });
+  const hint = huf.leavesAlpha.map(c=>`${c}=${huf.codes[c]}`).join(', ');
   const fb = document.getElementById('hufCodeFeedback');
-  fb.className='feedback info'; fb.textContent='정답을 채워 넣었어. 확인 후 다음 단계로 넘어가 봐.';
+  fb.className='feedback info';
+  fb.textContent = `힌트: ${hint} — 위 칸에 직접 입력하고 확인을 눌러야 다음 단계로 넘어갈 수 있어.`;
 }
 
 /* --- Stage 5 --- */
@@ -846,13 +887,9 @@ function hufCheckEncode(){
 }
 function hufRevealEncode(){
   const expected = hufExpectedEncoding();
-  document.getElementById('hufEncodeInput').value = expected;
-  huf.solvedEncode = { word: huf.word, encoded: expected, rate: computeRate(huf.word.length*8, expected.length) };
   const fb = document.getElementById('hufEncodeFeedback');
   fb.className='feedback info';
-  fb.innerHTML = `정답: ${expected}
-    <div class="row" style="margin-top:10px;"><button class="btn primary" onclick="hufGoStage(6)">다음: 디코딩 연습 →</button></div>`;
-  hufShowGauge(expected.length);
+  fb.textContent = `힌트: ${expected} — 위 칸에 직접 입력하고 확인을 눌러야 다음 단계로 넘어갈 수 있어.`;
 }
 
 /* --- Stage 6 (디코딩) --- */
@@ -881,12 +918,9 @@ function hufCheckDecode(){
 }
 function hufRevealDecode(){
   const expected = huf.decodeChallenge.sub;
-  document.getElementById('hufDecodeInput').value = expected;
-  huf.solvedDecode = { bits: huf.decodeChallenge.bits, answer: expected };
   const fb = document.getElementById('hufDecodeFeedback');
   fb.className='feedback info';
-  fb.innerHTML = `정답: ${expected}
-    <div class="row" style="margin-top:10px;"><button class="btn primary" onclick="openCertModal()">🎉 학습 완료 인증서 보기</button></div>`;
+  fb.textContent = `힌트: ${expected} — 위 칸에 직접 입력하고 확인을 눌러야 완료로 인정돼.`;
 }
 
 /* ===================================================================
