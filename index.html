@@ -173,38 +173,70 @@
 
   .footnote{font-size:11.5px;color:var(--muted);margin-top:18px;padding-top:12px;border-top:1px dashed var(--border);}
 
-  /* ---------- 인증서 ---------- */
+  /* ---------- 실습 인증서 ---------- */
   .cert-fab{
     position:fixed; right:18px; bottom:18px; z-index:60;
     font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:14.5px;
-    background:linear-gradient(135deg,var(--amber),var(--coral)); color:#fff;
+    background:linear-gradient(135deg,#69A96B,#2F7D4B); color:#fff;
     border:none; border-radius:30px; padding:14px 20px; cursor:pointer;
-    box-shadow:0 6px 20px rgba(214,72,43,0.35);
+    box-shadow:0 7px 22px rgba(47,125,75,.30);
   }
   .cert-fab:hover{filter:brightness(1.06); transform:translateY(-1px);}
   .cert-overlay{
-    position:fixed; inset:0; background:rgba(59,42,28,0.5); z-index:70;
+    position:fixed; inset:0; background:rgba(29,57,39,.52); z-index:70;
     display:none; align-items:center; justify-content:center; padding:18px;
   }
   .cert-card{
-    background:#FFFCF6; border-radius:20px; max-width:520px; width:100%;
-    padding:26px; box-shadow:0 20px 60px rgba(0,0,0,0.28);
-    border:3px double var(--amber-deep); max-height:88vh; overflow-y:auto;
+    background:#F8FFF8; border-radius:22px; max-width:650px; width:100%;
+    padding:26px; box-shadow:0 20px 60px rgba(0,0,0,.28);
+    border:1px solid #BBD8BF; max-height:92vh; overflow-y:auto;
   }
-  .cert-inner{text-align:center;}
-  .cert-stars{font-size:22px;margin-bottom:6px;}
-  .cert-title{font-family:'Space Grotesk',sans-serif;font-size:21px;margin:0 0 4px;color:var(--coral-deep);}
-  .cert-name{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin:0 0 14px;}
-  .cert-grid{display:flex;flex-direction:column;gap:8px;text-align:left;margin-bottom:12px;}
-  .cert-row{font-size:12.8px;background:var(--panel-alt);border:1px solid var(--border);border-radius:10px;padding:9px 12px;display:flex;flex-direction:column;gap:3px;}
-  .cert-row.done{border-color:var(--sage-deep);background:rgba(111,163,107,.1);}
-  .cert-row span:first-child{font-weight:700;font-family:'Space Grotesk',sans-serif;font-size:13.3px;}
-  .cert-date{font-size:11.5px;color:var(--muted);margin:10px 0 4px;}
-  .cert-tip{font-size:12px;color:var(--amber-deep);}
+  .cert-card h3.cert-form-title{margin:0 0 6px;font-size:20px;color:#245F3B;}
+  .cert-form-desc{margin:0 0 14px;color:#6A7F6E;font-size:13px;}
+  .cert-fields{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;margin-top:10px;}
+  .cert-field label{font-size:12px;color:#617565;display:block;margin-bottom:5px;text-align:left;font-weight:700;}
+  .cert-card input.wide{width:100%;border-color:#BCD7C1;}
   .cert-card .row{margin-top:12px;justify-content:center;}
-  .cert-card input.wide{width:100%;}
+  .cert-generate-btn{background:linear-gradient(135deg,#69A96B,#2F7D4B)!important;color:#fff!important;border-color:transparent!important;}
+  .certificate{
+    margin-top:20px;border-radius:22px;padding:4px;
+    background:linear-gradient(135deg,#95C99B,#2F7D4B 52%,#B7DDB4);
+    box-shadow:0 8px 24px rgba(47,125,75,.16);
+  }
+  .certificate-inner{
+    position:relative; overflow:hidden;
+    background:
+      repeating-linear-gradient(135deg,rgba(80,142,86,.055) 0 2px,transparent 2px 15px),
+      #FCFFFA;
+    border:2px dashed #3C7E4C;
+    border-radius:18px;padding:40px 34px 30px;text-align:center;
+  }
+  .certificate-inner::before,.certificate-inner::after{
+    content:'';position:absolute;border:1px solid rgba(60,126,76,.16);border-radius:50%;
+  }
+  .certificate-inner::before{width:180px;height:180px;left:-95px;top:-105px;}
+  .certificate-inner::after{width:230px;height:230px;right:-140px;bottom:-150px;}
+  .cert-seal{
+    position:absolute;top:18px;right:20px;width:66px;height:66px;border-radius:50%;
+    background:#2F7D4B;color:#fff;border:3px solid #fff;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.06em;
+    box-shadow:0 4px 12px rgba(47,125,75,.3);transform:rotate(8deg);
+  }
+  .cert-eyebrow{font-family:'JetBrains Mono',monospace;letter-spacing:.18em;font-size:11px;color:#3C7E4C;font-weight:700;margin:0 0 8px;}
+  .cert-title{font-family:'Space Grotesk',sans-serif;font-size:26px;margin:0 0 18px;color:#25482F;}
+  .cert-body{color:#647668;font-size:14px;line-height:1.9;margin:0 0 20px;}
+  .cert-body b{color:#25482F;}
+  .cert-meta{display:inline-flex;flex-direction:column;gap:3px;padding:10px 28px;border-top:1px solid #C8DDCB;border-bottom:1px solid #C8DDCB;}
+  .cert-meta span{font-size:10px;letter-spacing:.12em;color:#849689;}
+  .cert-meta b{font-family:'JetBrains Mono',monospace;font-size:13px;color:#2F7D4B;}
+  .cert-complete{margin:18px auto 0;max-width:500px;text-align:left;display:grid;gap:7px;}
+  .cert-complete div{font-size:12px;border:1px solid #C6DDC9;background:#F0F8F0;border-radius:9px;padding:8px 10px;color:#416449;}
+  .cert-footer{margin-top:18px;font-size:11px;color:#8B9C8E;letter-spacing:.04em;}
+  .cert-submit-note{margin-top:14px;padding:11px 13px;border-radius:10px;background:#E9F5E9;border:1px solid #77A97D;color:#2F7142;font-size:12.8px;font-weight:700;text-align:center;}
+  .certificate-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px;}
+  .cert-download-status{margin-top:8px;font-size:12px;color:#617565;text-align:center;min-height:1.4em;}
 
-  @media (max-width:520px){ .card{padding:18px;} .row{gap:8px;} .cert-fab{padding:12px 16px;font-size:13px;} }
+  @media (max-width:520px){ .card{padding:18px;} .row{gap:8px;} .cert-fab{padding:12px 16px;font-size:13px;} .cert-fields{grid-template-columns:1fr;} .cert-seal{position:static;margin:0 auto 12px;transform:none;} .certificate-inner{padding:28px 18px 24px;} }
 </style>
 </head>
 <body>
@@ -319,16 +351,48 @@
   <footer>정보 교과서 Ⅱ단원 「데이터」 압축 파트를 바탕으로 만든 연습 도구 · 문제는 매번 무작위로 새로 생성됩니다.</footer>
 </div>
 
-<button class="cert-fab" onclick="openCertModal()">🎉 학습 완료 인증서 보기</button>
-<div class="cert-overlay" id="certOverlay">
+<button class="cert-fab" onclick="openCertModal()">🎓 실습 인증서 발급받기</button>
+<div class="cert-overlay" id="certOverlay" onclick="if(event.target===this) closeCertModal()">
   <div class="cert-card">
-    <div id="certBody"></div>
-    <div class="row">
-      <input type="text" id="certName" class="wide" placeholder="이름 / 닉네임을 입력해 봐" autocorrect="off" autocomplete="off" spellcheck="false" oninput="renderCertContent()">
+    <h3 class="cert-form-title">🎓 실습 인증서 발급받기</h3>
+    <p class="cert-form-desc">학번과 이름을 입력한 뒤 인증서를 발급하고 PNG 이미지로 저장하세요.</p>
+    <div class="cert-fields">
+      <div class="cert-field">
+        <label for="certStudentNo">학번</label>
+        <input type="text" id="certStudentNo" class="wide" placeholder="예: 10315" inputmode="numeric" maxlength="12" autocorrect="off" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="cert-field">
+        <label for="certName">이름</label>
+        <input type="text" id="certName" class="wide" placeholder="예: 홍길동" maxlength="20" autocorrect="off" autocomplete="off" spellcheck="false">
+      </div>
     </div>
     <div class="row">
-      <button class="btn primary" onclick="renderCertContent()">🔄 새로고침</button>
+      <button class="btn cert-generate-btn" onclick="generateCertificate()">인증서 발급받기</button>
       <button class="btn" onclick="closeCertModal()">닫기</button>
+    </div>
+    <div class="cert-download-status" id="certDownloadStatus"></div>
+
+    <div class="certificate" id="certificate" style="display:none;">
+      <div class="certificate-inner" id="certificateInner">
+        <div class="cert-seal">PASS</div>
+        <p class="cert-eyebrow">CERTIFICATE OF COMPLETION</p>
+        <h3 class="cert-title">데이터 압축 실습 인증서</h3>
+        <p class="cert-body">
+          학번 <b id="certOutSid">-</b> · 이름 <b id="certOutName">-</b> 학생은<br>
+          <b>런-렝스 압축</b>과 <b>허프만 압축·디코딩</b> 실습을 수행하며<br>
+          데이터 압축의 원리와 압축 과정을 학습하였음을 인증합니다.
+        </p>
+        <div class="cert-meta">
+          <span>발급 일시</span>
+          <b id="certOutDatetime">-</b>
+        </div>
+        <div class="cert-complete" id="certComplete"></div>
+        <div class="cert-footer">정보 · Ⅱ. 데이터 · 데이터 압축 학습도구</div>
+        <div class="cert-submit-note">📌 다운로드한 PNG 파일을 패들렛에 제출해 주세요.</div>
+      </div>
+    </div>
+    <div class="certificate-actions" id="certActions" style="display:none;">
+      <button class="btn cert-generate-btn" onclick="downloadCertificatePNG()">📸 인증서 이미지 다운로드 (PNG)</button>
     </div>
   </div>
 </div>
@@ -924,50 +988,109 @@ function hufRevealDecode(){
 }
 
 /* ===================================================================
-   학습 완료 인증서
+   실습 인증서
 =================================================================== */
 function openCertModal(){
   document.getElementById('certOverlay').style.display='flex';
-  renderCertContent();
+  document.getElementById('certDownloadStatus').textContent='';
 }
-function closeCertModal(){
-  document.getElementById('certOverlay').style.display='none';
+function closeCertModal(){ document.getElementById('certOverlay').style.display='none'; }
+function formatCertDate(d){
+  const days=['일','월','화','수','목','금','토'];
+  let h=d.getHours(); const ampm=h<12?'오전':'오후'; h=h%12||12;
+  return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일(${days[d.getDay()]}) ${ampm} ${h}시 ${String(d.getMinutes()).padStart(2,'0')}분`;
 }
-function renderCertContent(){
-  const nameInput = document.getElementById('certName');
-  const name = (nameInput && nameInput.value.trim()) || '학생';
-  const now = new Date();
-  const dateStr = now.toLocaleString('ko-KR', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+function getCertData(){
+  const studentNo=(document.getElementById('certStudentNo')?.value||'').trim();
+  const name=(document.getElementById('certName')?.value||'').trim();
+  return {
+    studentNo,name,dateStr:formatCertDate(new Date()),
+    rleDone:!!rle.solved,hufEncDone:!!huf.solvedEncode,hufDecDone:!!huf.solvedDecode
+  };
+}
+function generateCertificate(){
+  const d=getCertData();
+  const status=document.getElementById('certDownloadStatus');
+  if(!d.studentNo || !d.name){
+    status.textContent='⚠️ 학번과 이름을 모두 입력해 주세요.'; status.style.color='#B44A3B';
+    (!d.studentNo?document.getElementById('certStudentNo'):document.getElementById('certName')).focus();
+    return;
+  }
+  document.getElementById('certOutSid').textContent=d.studentNo;
+  document.getElementById('certOutName').textContent=d.name;
+  document.getElementById('certOutDatetime').textContent=d.dateStr;
+  const items=[
+    d.rleDone ? `✅ 런-렝스 압축 완료 · ${rle.solved.original} → ${rle.solved.compressed} · 압축률 ${rle.solved.rate}%` : '▢ 런-렝스 압축 실습',
+    d.hufEncDone ? `✅ 허프만 인코딩 완료 · ${huf.solvedEncode.word} · 압축률 ${huf.solvedEncode.rate}%` : '▢ 허프만 인코딩 실습',
+    d.hufDecDone ? `✅ 허프만 디코딩 완료 · ${huf.solvedDecode.bits} → ${huf.solvedDecode.answer}` : '▢ 허프만 디코딩 실습'
+  ];
+  document.getElementById('certComplete').innerHTML=items.map(v=>`<div>${v}</div>`).join('');
+  document.getElementById('certificate').style.display='block';
+  document.getElementById('certActions').style.display='flex';
+  status.textContent='✅ 인증서가 발급되었습니다. 아래 다운로드 버튼을 눌러 PNG 파일로 저장하세요.'; status.style.color='#2F7142';
+  document.getElementById('certificate').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function roundedRect(ctx,x,y,w,h,r){
+  const rr=Math.min(r,w/2,h/2); ctx.beginPath(); ctx.moveTo(x+rr,y); ctx.arcTo(x+w,y,x+w,y+h,rr); ctx.arcTo(x+w,y+h,x,y+h,rr); ctx.arcTo(x,y+h,x,y,rr); ctx.arcTo(x,y,x+w,y,rr); ctx.closePath();
+}
+function wrapCanvasText(ctx,text,x,y,maxWidth,lineHeight,maxLines){
+  const chars=String(text).split(''); let line='',lines=[];
+  for(const ch of chars){ const test=line+ch; if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=ch;}else line=test; }
+  if(line) lines.push(line); if(maxLines&&lines.length>maxLines){lines=lines.slice(0,maxLines);lines[maxLines-1]+='…';}
+  lines.forEach((ln,i)=>ctx.fillText(ln,x,y+i*lineHeight)); return y+lines.length*lineHeight;
+}
+function safeFilePart(str){return String(str||'').replace(/[\\/:*?"<>|\s]+/g,'_').replace(/^_+|_+$/g,'')||'학생';}
+function downloadCertificatePNG(){
+  const d=getCertData(); const status=document.getElementById('certDownloadStatus');
+  if(!d.studentNo||!d.name||document.getElementById('certificate').style.display==='none'){
+    status.textContent='⚠️ 먼저 학번과 이름을 입력하고 인증서를 발급해 주세요.'; status.style.color='#B44A3B'; return;
+  }
+  status.textContent='PNG 이미지를 만드는 중...'; status.style.color='#617565';
+  try{
+    /* 외부 라이브러리 없이 Canvas로 직접 그려서 오프라인에서도 다운로드되도록 구성 */
+    const canvas=document.createElement('canvas'); canvas.width=1400; canvas.height=1750;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#FCFFFA'; ctx.fillRect(0,0,1400,1750);
+    const grad=ctx.createLinearGradient(70,70,1330,1680); grad.addColorStop(0,'#9BCDA1'); grad.addColorStop(.5,'#2F7D4B'); grad.addColorStop(1,'#C1E1BE');
+    ctx.strokeStyle=grad; ctx.lineWidth=14; roundedRect(ctx,52,52,1296,1646,34); ctx.stroke();
+    ctx.strokeStyle='#5A9465'; ctx.lineWidth=3; ctx.setLineDash([12,10]); roundedRect(ctx,78,78,1244,1594,26); ctx.stroke(); ctx.setLineDash([]);
 
-  const rleDone = !!rle.solved;
-  const hufEncDone = !!huf.solvedEncode;
-  const hufDecDone = !!huf.solvedDecode;
-  const doneCount = [rleDone,hufEncDone,hufDecDone].filter(Boolean).length;
-  const stars = '⭐'.repeat(doneCount) + '☆'.repeat(3-doneCount);
+    ctx.fillStyle='#2F7D4B'; ctx.beginPath(); ctx.arc(1190,180,72,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font='700 28px sans-serif'; ctx.fillText('PASS',1190,190);
+    ctx.fillStyle='#3C7E4C'; ctx.font='700 24px monospace'; ctx.fillText('CERTIFICATE OF COMPLETION',700,180);
+    ctx.fillStyle='#25482F'; ctx.font='700 58px sans-serif'; ctx.fillText('데이터 압축 실습 인증서',700,270);
+    ctx.fillStyle='#4E6654'; ctx.font='31px sans-serif'; ctx.fillText(`학번 ${d.studentNo} · 이름 ${d.name} 학생은`,700,355);
+    ctx.font='29px sans-serif'; ctx.fillText('런-렝스 압축과 허프만 압축·디코딩 실습을 수행하며',700,410);
+    ctx.fillText('데이터 압축의 원리와 압축 과정을 학습하였음을 인증합니다.',700,458);
 
-  document.getElementById('certBody').innerHTML = `
-    <div class="cert-inner">
-      <div class="cert-stars">${stars}</div>
-      <h3 class="cert-title">데이터 압축 실습 완료 인증서</h3>
-      <p class="cert-name">${name}</p>
-      <div class="cert-grid">
-        <div class="cert-row ${rleDone?'done':''}">
-          <span>① 런-렝스 압축</span>
-          <span>${rleDone ? `✅ "${rle.solved.original}" → "${rle.solved.compressed}" (압축률 ${rle.solved.rate}%)` : '⬜ 아직 미완료'}</span>
-        </div>
-        <div class="cert-row ${hufEncDone?'done':''}">
-          <span>② 허프만 인코딩</span>
-          <span>${hufEncDone ? `✅ "${huf.solvedEncode.word}" → ${huf.solvedEncode.encoded} (압축률 ${huf.solvedEncode.rate}%)` : '⬜ 아직 미완료'}</span>
-        </div>
-        <div class="cert-row ${hufDecDone?'done':''}">
-          <span>③ 허프만 디코딩</span>
-          <span>${hufDecDone ? `✅ ${huf.solvedDecode.bits} → "${huf.solvedDecode.answer}"` : '⬜ 아직 미완료'}</span>
-        </div>
-      </div>
-      <p class="cert-date">${dateStr} · 압축 연구실</p>
-      <p class="cert-tip">📸 이 화면을 캡처해서 패들렛 / 구글 클래스룸에 제출해 봐!</p>
-    </div>
-  `;
+    ctx.strokeStyle='#C4DCC7'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(430,520); ctx.lineTo(970,520); ctx.stroke();
+    ctx.fillStyle='#809184'; ctx.font='21px sans-serif'; ctx.fillText('발급 일시',700,557);
+    ctx.fillStyle='#2F7D4B'; ctx.font='700 27px monospace'; ctx.fillText(d.dateStr,700,598);
+    ctx.beginPath(); ctx.moveTo(430,625); ctx.lineTo(970,625); ctx.stroke();
+
+    const rows=[
+      ['① 런-렝스 압축',d.rleDone?`완료 · ${rle.solved.original} → ${rle.solved.compressed} · 압축률 ${rle.solved.rate}%`:'실습 미완료',d.rleDone],
+      ['② 허프만 인코딩',d.hufEncDone?`완료 · ${huf.solvedEncode.word} · 압축률 ${huf.solvedEncode.rate}%`:'실습 미완료',d.hufEncDone],
+      ['③ 허프만 디코딩',d.hufDecDone?`완료 · ${huf.solvedDecode.bits} → ${huf.solvedDecode.answer}`:'실습 미완료',d.hufDecDone]
+    ];
+    ctx.textAlign='left'; let y=700;
+    for(const [title,detail,done] of rows){
+      ctx.fillStyle=done?'#EFF8EF':'#F7FAF7'; ctx.strokeStyle=done?'#7FAE84':'#CBDCCB'; ctx.lineWidth=2; roundedRect(ctx,150,y,1100,160,18); ctx.fill(); ctx.stroke();
+      ctx.fillStyle='#2B5235'; ctx.font='700 31px sans-serif'; ctx.fillText(title,190,y+50);
+      ctx.fillStyle=done?'#3F7449':'#788A7B'; ctx.font='25px sans-serif'; wrapCanvasText(ctx,detail,190,y+96,1020,34,2); y+=190;
+    }
+    ctx.textAlign='center';
+    ctx.fillStyle='#EAF5EA'; ctx.strokeStyle='#78A67D'; ctx.lineWidth=2; roundedRect(ctx,180,1320,1040,120,18); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#2F7142'; ctx.font='700 31px sans-serif'; ctx.fillText('다운로드한 PNG 파일을 패들렛에 제출해 주세요.',700,1393);
+    ctx.fillStyle='#879889'; ctx.font='22px sans-serif'; ctx.fillText('정보 · Ⅱ. 데이터 · 데이터 압축 학습도구',700,1550);
+
+    const filename=`데이터압축_실습인증서_${safeFilePart(d.studentNo)}_${safeFilePart(d.name)}.png`;
+    const trigger=(url)=>{ const a=document.createElement('a'); a.href=url; a.download=filename; a.style.display='none'; document.body.appendChild(a); a.click(); setTimeout(()=>a.remove(),0); };
+    if(canvas.toBlob){
+      canvas.toBlob(blob=>{ if(blob){const url=URL.createObjectURL(blob);trigger(url);setTimeout(()=>URL.revokeObjectURL(url),1800);} else trigger(canvas.toDataURL('image/png')); },'image/png');
+    }else trigger(canvas.toDataURL('image/png'));
+    status.textContent='✅ 인증서 PNG 다운로드를 시작했습니다. 저장된 파일을 패들렛에 제출해 주세요.'; status.style.color='#2F7142';
+  }catch(err){ console.error(err); status.textContent='⚠️ 이미지 저장 중 오류가 발생했습니다. Chrome 또는 Edge에서 다시 시도해 주세요.'; status.style.color='#B44A3B'; }
 }
 
 /* ===================================================================
