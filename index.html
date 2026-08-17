@@ -8,27 +8,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#FFF6E7;
+    --bg:#F2F8F1;
     --panel:#FFFFFF;
-    --panel-alt:#FFF1DC;
-    --panel-soft:#FFFAF1;
-    --border:#F0D9AF;
-    --text:#3B2A1C;
-    --muted:#93785D;
-    --amber:#F2A93B;
-    --amber-deep:#D9860F;
-    --coral:#EF6A4C;
-    --coral-deep:#D6482B;
+    --panel-alt:#EAF4E8;
+    --panel-soft:#F7FBF6;
+    --border:#CFE0CC;
+    --text:#243326;
+    --muted:#6F806F;
+    --amber:#7FB77A;
+    --amber-deep:#4F8A4B;
+    --coral:#63A35C;
+    --coral-deep:#39743A;
     --sage:#6FA36B;
-    --sage-deep:#4C7C49;
-    --shadow: 0 3px 14px rgba(150,100,40,0.08);
+    --sage-deep:#3E6D3E;
+    --shadow: 0 3px 14px rgba(54,102,58,0.10);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(circle at 8% -8%, rgba(242,169,59,0.16), transparent 42%),
-      radial-gradient(circle at 100% 4%, rgba(239,106,76,0.10), transparent 46%),
+      radial-gradient(circle at 8% -8%, rgba(127,183,122,0.18), transparent 42%),
+      radial-gradient(circle at 100% 4%, rgba(99,163,92,0.12), transparent 46%),
       var(--bg);
     color:var(--text);
     font-family:'Noto Sans KR', sans-serif;
@@ -70,16 +70,16 @@
   .algo-badge{
     display:inline-block;font-family:'Space Grotesk',sans-serif;font-weight:700;
     font-size:clamp(22px,4vw,30px);color:var(--coral-deep);
-    background:rgba(242,169,59,0.16);border:1.5px solid var(--amber-deep);
+    background:rgba(127,183,122,0.18);border:1.5px solid var(--amber-deep);
     border-radius:12px;padding:6px 16px;margin-bottom:14px;letter-spacing:-0.01em;
   }
   .card .desc{color:var(--muted);font-size:13.8px;margin-bottom:14px;}
   .explain{
     background:var(--panel-soft);border:1px dashed var(--border);border-radius:12px;
-    padding:13px 16px;font-size:13.3px;color:#5c4630;margin:12px 0;
+    padding:13px 16px;font-size:13.3px;color:#405642;margin:12px 0;
   }
   .explain b{color:var(--coral-deep);}
-  .explain.example{background:#FFF7EC;}
+  .explain.example{background:#F3F9F1;}
   .explain ol, .explain ul{margin:6px 0 0 18px;padding:0;}
   .explain li{margin-bottom:3px;}
 
@@ -90,9 +90,9 @@
     border-radius:10px;border:1px solid var(--border);background:var(--panel-alt);color:var(--text);
     padding:10px 16px;cursor:pointer;transition:transform .12s ease, border-color .12s ease, background .12s ease;
   }
-  button.btn:hover{border-color:var(--amber-deep);background:#FFE9C4;}
+  button.btn:hover{border-color:var(--amber-deep);background:#DDEDD9;}
   button.btn:active{transform:scale(.97);}
-  button.btn.primary{background:linear-gradient(135deg,var(--amber),var(--coral));color:#fff;border-color:transparent;}
+  button.btn.primary{background:linear-gradient(135deg,#7FB77A,#4F8A4B);color:#fff;border-color:transparent;}
   button.btn.primary:hover{filter:brightness(1.05);}
   button.btn.ghost{background:transparent;color:var(--muted);border-color:transparent;text-decoration:underline;font-weight:400;padding:6px 4px;}
   button.btn.ghost:hover{color:var(--coral-deep);}
@@ -122,8 +122,8 @@
   .gauge{margin-top:18px;}
   .gauge .label-row{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);margin-bottom:6px;}
   .gauge .track{position:relative;height:34px;border-radius:9px;background:var(--panel-alt);border:1px solid var(--border);overflow:hidden;}
-  .gauge .orig-bar{position:absolute;inset:0;background:repeating-linear-gradient(135deg,#FBE3B8,#FBE3B8 6px,#F6D69A 6px,#F6D69A 12px);}
-  .gauge .comp-bar{position:absolute;top:0;left:0;bottom:0;width:0%;background:linear-gradient(90deg, var(--sage), var(--sage-deep));transition:width 900ms cubic-bezier(.2,.8,.2,1);border-radius:9px 0 0 9px;}
+  .gauge .orig-bar{position:absolute;inset:0;background:repeating-linear-gradient(135deg,#D9EAD6,#D9EAD6 6px,#C8E0C3 6px,#C8E0C3 12px);}
+  .gauge .comp-bar{position:absolute;top:0;left:0;bottom:0;width:0%;background:linear-gradient(90deg,#8BC486,#4F8A4B);transition:width 900ms cubic-bezier(.2,.8,.2,1);border-radius:9px 0 0 9px;}
   .gauge .comp-bar span{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12px;color:#fff;font-weight:700;}
   .gauge .rate{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:var(--sage-deep);margin-top:10px;}
   .gauge .rate small{font-family:'Noto Sans KR';font-weight:400;color:var(--muted);font-size:13px;margin-left:6px;}
@@ -163,9 +163,9 @@
   .run-chip{font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--panel-alt);border:1px solid var(--border);border-radius:8px;padding:5px 10px;}
 
   .rule-banner{
-    background:linear-gradient(135deg, rgba(242,169,59,0.20), rgba(239,106,76,0.15));
+    background:linear-gradient(135deg, rgba(127,183,122,0.22), rgba(99,163,92,0.16));
     border:2px solid var(--amber-deep); border-radius:14px;
-    padding:14px 18px; font-size:13.8px; color:#4a3520; margin:14px 0;
+    padding:14px 18px; font-size:13.8px; color:#2F4A31; margin:14px 0;
     display:flex; gap:10px; align-items:flex-start; line-height:1.65;
   }
   .rule-banner .icon{font-size:20px;line-height:1;}
@@ -432,13 +432,33 @@ function computeRuns(str){
 }
 function buildRLE(str){ return computeRuns(str).map(r=>r.ch+r.len).join(''); }
 
+const RLE_PROFILES = [
+  {name:'기본 반복형', runMin:4, runMax:6, lenMin:2, lenMax:6, singleRate:0.00},
+  {name:'긴 반복형',   runMin:3, runMax:5, lenMin:4, lenMax:9, singleRate:0.00},
+  {name:'혼합 반복형', runMin:5, runMax:8, lenMin:2, lenMax:5, singleRate:0.30},
+  {name:'짧은 반복형', runMin:6, runMax:9, lenMin:2, lenMax:3, singleRate:0.18},
+  {name:'불규칙형',    runMin:5, runMax:8, lenMin:2, lenMax:7, singleRate:0.42},
+  {name:'큰 횟수형',   runMin:3, runMax:4, lenMin:7, lenMax:12, singleRate:0.00}
+];
+let rleRecentProblems = [];
+
 function randomRLEString(){
   const letters='abcdefghijklmnopqrstuvwxyz'.split('');
-  const runCount = 4+Math.floor(Math.random()*3);
+  const profile=pick(RLE_PROFILES);
+  const runCount=profile.runMin+Math.floor(Math.random()*(profile.runMax-profile.runMin+1));
   let str=''; let last=null;
   for(let i=0;i<runCount;i++){
     let ch; do{ ch=pick(letters); } while(ch===last); last=ch;
-    const len=2+Math.floor(Math.random()*6);
+    let len;
+    if(Math.random()<profile.singleRate){
+      len=1;
+    }else{
+      len=profile.lenMin+Math.floor(Math.random()*(profile.lenMax-profile.lenMin+1));
+    }
+    // 화면이 지나치게 길어지지 않도록 전체 길이는 약 32자 이내로 제한
+    const remain=32-str.length;
+    if(remain<=0) break;
+    len=Math.min(len,remain);
     str+=ch.repeat(len);
   }
   return str;
@@ -465,7 +485,13 @@ function rleToggleRuns(){
   el.style.display = el.style.display==='none' ? 'flex':'none';
 }
 function rleNewRandom(){
-  let s; do { s = randomRLEString(); } while (s === rle.original);
+  let s; let tries=0;
+  do{
+    s=randomRLEString();
+    tries++;
+  }while((s===rle.original || rleRecentProblems.includes(s)) && tries<40);
+  rleRecentProblems.push(s);
+  if(rleRecentProblems.length>8) rleRecentProblems.shift();
   rleSetProblem(s);
 }
 function rleUseCustom(){
@@ -523,9 +549,36 @@ function rleReveal(){
 /* ===================================================================
    허프만 압축
 =================================================================== */
-const HUF_WORDS = ['banana','mississippi','committee','bookkeeper','tennessee','assessment',
+const HUF_WORDS = [
+  'banana','mississippi','committee','bookkeeper','tennessee','assessment',
   'classroom','greenhouse','alphabet','strawberry','basketball','chocolate','breakfast',
-  'dinosaur','elephant','umbrella','butterfly','announcement','notebook','keyboard'];
+  'dinosaur','elephant','umbrella','butterfly','announcement','notebook','keyboard',
+  'tomorrow','balloon','success','address','coffee','cheese','pepper','letter',
+  'summer','winter','yellow','school','science','computer','program','network',
+  'digital','internet','message','picture','student','teacher','library','festival',
+  'vacation','mountain','sunshine','rainbow','football','baseball','swimming','running',
+  'pineapple','blueberry','watermelon','avocado','coconut','sandwich','cookie','pudding',
+  'parallel','minimum','maximum','frequency','sequence','pattern','repetition','compression',
+  'information','communication','calculation','application','education','technology'
+];
+
+const HUF_PATTERNS = [
+  'aabbbcccc','aaabbbbccccc','aabbcccdddd','abacabadabacaba',
+  'abcabcabcabc','aabcaabcaabc','abbcccddddeeeee','abcdabcdaaa',
+  'xyyzzzwwww','mmnnnooooppppp','qrrssstttt','aabcddddeefffff'
+];
+let hufRecentProblems = [];
+
+function randomHuffmanProblem(){
+  // 약 75%는 실제 단어, 25%는 빈도 차이가 분명한 연습용 문자열을 사용
+  if(Math.random()<0.75) return pick(HUF_WORDS);
+  const base=pick(HUF_PATTERNS);
+  // 같은 빈도 구조라도 문자 조합이 달라지도록 알파벳을 무작위 치환
+  const source=[...new Set(base.split(''))];
+  const pool=shuffle('abcdefghijklmnopqrstuvwxyz'.split('')).slice(0,source.length);
+  const map={}; source.forEach((ch,i)=>map[ch]=pool[i]);
+  return base.split('').map(ch=>map[ch]).join('');
+}
 
 let huf = { word:'', freq:{}, steps:[], codes:{}, root:null, leavesAlpha:[], stage:1, mcIdx:0,
   decodeChallenge:null, solvedEncode:null, solvedDecode:null };
@@ -602,7 +655,16 @@ function hufSetProblem(word){
   document.getElementById('hufStepCard').style.display='block';
   hufRender();
 }
-function hufNewRandom(){ let w; do { w = pick(HUF_WORDS); } while (w===huf.word); hufSetProblem(w); }
+function hufNewRandom(){
+  let w; let tries=0;
+  do{
+    w=randomHuffmanProblem();
+    tries++;
+  }while((w===huf.word || hufRecentProblems.includes(w) || new Set(w).size<3) && tries<50);
+  hufRecentProblems.push(w);
+  if(hufRecentProblems.length>10) hufRecentProblems.shift();
+  hufSetProblem(w);
+}
 function hufUseCustom(){
   const v = document.getElementById('hufCustomInput').value.trim().toLowerCase();
   const fb = document.getElementById('hufCustomFeedback');
@@ -655,7 +717,7 @@ function renderTreeSVG(roots, opts){
         const x2=px(child), y2=py(child);
         edges.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="2.4" opacity="0.85"/>`);
         const mx=(x1+x2)/2, my=(y1+y2)/2;
-        edges.push(`<rect x="${mx-8}" y="${my-9}" width="16" height="16" rx="4" fill="#FFF9EF" stroke="${color}" stroke-width="1"/>`);
+        edges.push(`<rect x="${mx-8}" y="${my-9}" width="16" height="16" rx="4" fill="#F5FAF4" stroke="${color}" stroke-width="1"/>`);
         edges.push(`<text x="${mx}" y="${my+3.5}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="${color}">${bit}</text>`);
         visit(child);
       });
